@@ -33,4 +33,4 @@ install:
   - yarn install
   - yarn link
   - yarn run test
-  - mvn tests
+  - mvn clean package
