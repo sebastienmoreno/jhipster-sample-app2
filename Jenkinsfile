@@ -18,9 +18,9 @@ node {
     stage('push image to dockerhub'){
       withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "dockerhub", usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
         sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD'
+        sh 'docker tag jhipstersampleapplication $DOCKER_HUB_USER/jhipster-sample-app:latest'
+        sh 'docker push $DOCKER_HUB_USER/jhipster-sample-app:latest'
       }
-      sh 'docker tag jhipstersampleapplication $DOCKER_HUB_USER/jhipster-sample-app:latest'
-      sh 'docker push $DOCKER_HUB_USER/jhipster-sample-app:latest'
     }
     
     docker.image('maven:3.6.0-jdk-8-alpine').inside {
