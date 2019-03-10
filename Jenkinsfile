@@ -11,6 +11,12 @@ node {
   }
 
   if (env.BRANCH_NAME ==~ 'master|develop') {
+    docker.image('maven:3.6.0-jdk-8-alpine').inside {
+      stage('push package to repository'){
+        sh './mvnw deploy -DaltDeploymentRepository=nexus-snapshots::default::http://54.194.98.220:8081/repository/maven-snapshots/'
+      }
+    }
+
     stage('build docker image'){
         sh 'docker build -t jhipstersampleapplication .'
     }
