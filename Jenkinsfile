@@ -6,6 +6,7 @@ node {
   docker.image('jhipster/jhipster').inside {
     stage('build app'){
       sh './mvnw package -Pprod'
+      step([$class: 'JUnitResultArchiver', allowEmptyResults: true, healthScaleFactor: 20, testResults: '**/target/surefire-reports/*.xml'])
     }
   }
 
