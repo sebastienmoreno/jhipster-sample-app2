@@ -8,14 +8,12 @@ node {
       sh './mvnw package -Pprod'
       step([$class: 'JUnitResultArchiver', allowEmptyResults: true, healthScaleFactor: 20, testResults: '**/target/surefire-reports/*.xml'])
     }
-    if (env.BRANCH_NAME ==~ 'master|develop') {
-      stage('build docker image'){
-        sh './mvnw clean package -Pprod jib:exportDockerContext && docker build -t jhipstersampleapplication target/jib-docker-context'
-      }
-    }
   }
 
   if (env.BRANCH_NAME ==~ 'master|develop') {
+    stage('build docker image'){
+        sh 'docker build -t jhipstersampleapplication .'
+    }
 
     stage('push image to dockerhub'){
       withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "dockerhub", usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
