@@ -10,7 +10,7 @@ node {
     }
     if (env.BRANCH_NAME ==~ 'master|develop') {
       stage('build docker image'){
-        sh './mvnw docker:build'
+        sh './mvnw clean package -Pprod jib:exportDockerContext && docker build -t jhipstersampleapplication target/jib-docker-context'
       }
     }
   }
